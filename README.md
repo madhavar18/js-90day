@@ -12,3 +12,16 @@
 - callbacks: A callback is just a function you pass to another function, to be called when something finishes.
 - Promises: A promise represents a value that will be available in the future. 
 - async/await: They are just syntactic sugar over promises. make asynchronous code look like synchronous, making them easy to read.
+
+
+## Day 7 - Arrow functions, Destructuring, Spread and Rest, Map, Filter and Reduce
+
+### What I Learned
+
+- Why arrow functions?: before arrow functions, developers faced problems with `this` in functions. Because regular functions define their own `this` based on how the functons is called. Developers had 2 ugly workarounds. they worked, but they were ugly.  
+- What arrow functions solve?: Arrow functions dont define their own `this`. They capture it from the surrounding lexical scope. 
+- Destructuring: The art of extracting individual elements from objects and arrays.
+- Spread operator: used for extracting elements, cloning objects and arrays etc.,
+- Map: Transform every element - same length output.
+- Filter: Keep elements matching a condition - shorter output.
+- Reduce: Fold and array/object into a single value.
