@@ -45,5 +45,26 @@
   3. React DIFFS the new tree aganist the previous one (the "reconciliation" algorithm)
   4. React makes only the minimal real DOM changes needed.
 - React batches all your state changes, figures out the minimum set of real DOM operations needed, and applies them in one go.  Instead of 50 individual DOM mutations triggering 50 reflows, React does 1 surgical update triggering 1 Reflow.
-- Declarative UI always beats Imperative UI: you just need to describe what the UI should look like for a given state. React figures out the transitions.
-- JSX: The syntactic sugar that Babel compiles to plain javascript function calls.
+- Declarative UI always beats Imperative UI: you just need to describe what the UI should look like for a given state. React figures out the transis.tions.
+- JSX: The syntactic sugar that Babel compiles to plain javascript function call
+
+
+## Day 12 - useState deep dive, useEffect and the Hooks mental model
+
+### What I Learned
+
+- Before 2019, React had 2 types of components: class components and functions components.  Class components carried significant complexity.  
+- Hooks let functional components have state & life cycle behaviour.
+- Rules of Hooks: 
+  1. only call hooks at the top level of a component - never inside loops, conditional (or) nested loops.
+  2. only call hooks inside React functional components (or) custom hooks - never in regular JS functions.
+- `useState`: This is array destructuring - `useState` return a two - element array. Element 0 is the current value. Element 1 is the setter function.
+- What happens when you call setter functions: 
+  ->React schedules a re-render of this component.
+  ->React re-executes the entire component function from top to bottom.
+  ->When it hits useState() again, it does not use the initial value.  it return the value provided in the setter function.
+  ->React creates a new virtual DOM  tree using the new state.
+  ->React diffs against the changed real DOM nodes.
+  ->React only updates the changed real DOM nodes.
+- `useEffect`: used to handle everything outside React - API calls, timers, event listeners etc.
+- Three forms of `useEffect` based on dependency array - no dependecy array, empty array, dependencies.
