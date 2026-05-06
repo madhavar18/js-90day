@@ -48,9 +48,9 @@ function App() {
                     Currently executing a structured 90-day program across Software Engineering, MERN stack, and Machine Learning.
                 </p>
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                    <a href="mailto:madhavarao1817@gmail.com" style={linkStyle}>Email</a>
+                    <a href="mailto : madhavarao1817@gmail.com" style={linkStyle}>Email</a>
                     <a href="https://github.com/madhavar18" target="_blank" style={linkStyle}>GitHub</a>
-                    <a href="#" style={linkStyle}>LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/madhava-rao-yangalasetty-4291bb2a9" style={linkStyle}>LinkedIn</a>
                     <a href="#" style={{ ...linkStyle, background: '#1a1a1a', color: 'white', borderColor: '#1a1a1a' }}>Download Resume</a>
                 </div>
             </section>
