@@ -68,3 +68,19 @@
   ->React only updates the changed real DOM nodes.
 - `useEffect`: used to handle everything outside React - API calls, timers, event listeners etc.
 - Three forms of `useEffect` based on dependency array - no dependecy array, empty array, dependencies.
+
+## Day 17 - Node.js & Express: Building your first real backend
+
+### What I Learned
+
+- WHY Node.js?: In 2009, all the web frameworks followed the same model.  "One thread per request".
+- When a request came in, the server assigned it a thread.  The thread did everything from start-to-end.  From database, processing the data and to sending the data.  
+- This created a waiting problem.  A thread approximately weighs around 1-2 MB.  If a DB response takes 200ms, the thread sits idle for 200ms doing nothing, blocked for other requests, still occupying memory.
+- This is the case of one thread.  Now imagine this with 10000 concurrent requests/connections.  Thats potentially 10-20 GB sitting idle, doing nothing, blocked for other requests.  
+- This was known as the "C10K" problem.
+- Observing this, Ryan Dahl said:"The waiting is the problem,  not the processing".  So, he decided to solve it by creating his own framework.
+- He took the V8 javascript engine - which already runs a event loop - and put it on a server.  
+- Instead of one thread per request,  One thread handled all requests.  
+- When a request needs to wait for the DB, the event loop parks it and handles the next request. And when the response of the first request comes, it processes the first request and sends the response.
+- This is WHY Node.js became the dominant choice for I/O-heavy APIs - REST APIs, microservices, real time applications.  Not fast, but handles a load of concurrent requests with much less memory.
+- But it is bad for CPU-heavy tasks.  If a request requires heavy computation(video encoding, complex ML inference), it blocks the single thread and every other request waits.  This is WHY ML inference runs in a seperate Python service.
