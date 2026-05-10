@@ -1,44 +1,40 @@
+// index.js
+// Entry point. Wires everything together.
+// If you can't explain why a line is here, it probably belongs elsewhere.
+
 const express = require('express');
 const cors = require('cors');
-const app = express();
+const dotenv = require('dotenv');
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5001;
+
+app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }));
 app.use(express.json());
 
-// In-memory bank — same structure as BankRepository in Java
-let accounts = [
-    { id: 'SAV001', owner: 'Ravi',  balance: 10000, type: 'savings'  },
-    { id: 'CHK001', owner: 'Priya', balance: 5000,  type: 'checking' },
-    { id: 'SAV002', owner: 'Amit',  balance: 8000,  type: 'savings'  }
-];
-
-const MIN_BALANCE = 500;
-
-app.get('/api/accounts', (req, res) => {
-    res.json({ success: true, data: accounts });
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} | ${req.method} ${req.url}`);
+    next();
 });
 
-app.post('/api/accounts/:id/deposit', (req, res) => {
-    const { amount } = req.body;
-    const account = accounts.find(a => a.id === req.params.id);
-    if (!account) return res.status(404).json({ error: 'Account not found' });
-    if (!amount || amount <= 0) return res.status(400).json({ error: 'Invalid amount' });
-    account.balance += amount;
-    res.json({ success: true, data: account });
+const accountRoutes = require('./routes/accountRoutes');
+app.use('/api/accounts', accountRoutes);
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', uptime: process.uptime() });
 });
 
-app.post('/api/accounts/:id/withdraw', (req, res) => {
-    const { amount } = req.body;
-    const account = accounts.find(a => a.id === req.params.id);
-    if (!account) return res.status(404).json({ error: 'Account not found' });
-    if (!amount || amount <= 0) return res.status(400).json({ error: 'Invalid amount' });
-    if (account.balance - amount < MIN_BALANCE) {
-        return res.status(400).json({
-            error: `Cannot withdraw: balance would fall below minimum ₹${MIN_BALANCE}`
-        });
-    }
-    account.balance -= amount;
-    res.json({ success: true, data: account });
+app.use((err, req, res, next) => {
+    console.error(err.message);
+    res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
 });
 
-app.listen(5001, () => console.log('Bank server running on http://localhost:5001'));
+app.use((req, res) => {
+    res.status(404).json({ error: `Route ${req.method} ${req.url} not found` });
+});
+
+app.listen(PORT, () => {
+    console.log(`Bank server running on http://localhost:${PORT}`);
+});
